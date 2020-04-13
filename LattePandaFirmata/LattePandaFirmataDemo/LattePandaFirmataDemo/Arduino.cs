@@ -59,6 +59,7 @@ namespace LattePanda.Firmata
     public const int START_SYSEX = 0xF0; // start a MIDI SysEx message
     public const int END_SYSEX = 0xF7; // end a MIDI SysEx message
     public const int I2C_REPLY = 0x77; // I2C reply messages from an I/O board to a host
+    public const int SYSEX_SUB_STRING = 0x71; 
 
     private const int TOTAL_PORTS = 2;
     private const int SERVO_CONFIG = 0x70; // set max angle, minPulse, maxPulse, freq
@@ -140,20 +141,20 @@ namespace LattePanda.Firmata
 
       byte[] command = new byte[2];
 
-      for (int i = 0; i < 6; i++)
-      {
-        command[0] = (byte)(REPORT_ANALOG | i);
-        command[1] = (byte)1;
-        _serialPort.Write(command, 0, 2);
-      }
+      //for (int i = 0; i < 6; i++)
+      //{
+      //  command[0] = (byte)(REPORT_ANALOG | i);
+      //  command[1] = (byte)1;
+      //  _serialPort.Write(command, 0, 2);
+      //}
 
-      for (int i = 0; i < 2; i++)
-      {
-        command[0] = (byte)(REPORT_DIGITAL | i);
-        command[1] = (byte)1;
-        _serialPort.Write(command, 0, 2);
-      }
-      command = null;
+      //for (int i = 0; i < 2; i++)
+      //{
+      //  command[0] = (byte)(REPORT_DIGITAL | i);
+      //  command[1] = (byte)1;
+      //  _serialPort.Write(command, 0, 2);
+      //}
+      //command = null;
 
       if (isListen)
       {
@@ -358,7 +359,7 @@ namespace LattePanda.Firmata
       var autoEvent = new AutoResetEvent(false);
       var inputProcessor = new InputProcessor(_serialPort, this);
       // Execute method by a timer every 30ms
-      var stateTimer = new Timer(inputProcessor.InputProcess, autoEvent, 0, 30);
+      var stateTimer = new Timer(inputProcessor.InputProcess, autoEvent, 0, 5);
 
       // Wait when method return anything
       autoEvent.WaitOne();
@@ -425,6 +426,15 @@ namespace LattePanda.Firmata
                 }
                 _arduino.callDidI2CDataReveive(i2cReceivedData[0], i2cReceivedData[1], i2cReceivedData.Skip(2).ToArray());
 
+              }
+              if (_storedInputData[0] == Arduino.SYSEX_SUB_STRING) {
+                //
+                byte[] dummy = new byte[(_sysexBytesRead - 1) / 2];
+                for (int i = 0; i < dummy.Count(); i++)
+                {
+                    dummy[i] = (byte)(_storedInputData[(i * 2) + 1] | _storedInputData[(i * 2) + 2] << 7);
+                }
+                string sDummy = System.Text.Encoding.UTF8.GetString(dummy, 0, dummy.Length);
               }
               _sysexBytesRead = 0;
             }

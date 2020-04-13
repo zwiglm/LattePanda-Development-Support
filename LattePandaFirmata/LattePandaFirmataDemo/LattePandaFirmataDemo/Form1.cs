@@ -23,12 +23,13 @@ namespace LattePandaFirmataDemo
         {
             this.FormClosing += Form1_FormClosing;
 
-            arduino.pinMode(13, Arduino.OUTPUT);
-            arduino.pinMode(12, Arduino.INPUT);
-            arduino.pinMode(9,Arduino.SERVO);
-            arduino.pinMode(11, Arduino.PWM);
+            //arduino.pinMode(13, Arduino.OUTPUT);
+            //arduino.pinMode(12, Arduino.INPUT);
+            //arduino.pinMode(9,Arduino.SERVO);
+            //arduino.pinMode(11, Arduino.PWM);
 
-            arduino.wireBegin(200);
+            //arduino.wireBegin(200);
+
             //arduino.wireRequest(0x53, 0x2D, new Int16[] { 8 }, Arduino.I2C_MODE_WRITE);//Write data to I2C bus
             //arduino.wireRequest(0x53, 0x32, new Int16[] { 6 }, Arduino.I2C_MODE_READ_CONTINUOUSLY);//Read data form I2C data
             //arduino.I2CRequest(0x53, 0x32, new Int16[] {}, Arduino.I2C_MODE_STOP_READING);//Stop Reading
