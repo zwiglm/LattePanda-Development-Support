@@ -126,7 +126,7 @@ namespace ZiFirmata
         /// default baud rate (57600), and a reboot delay (8 seconds).
         /// and automatically opens the specified serial connection.
         /// </summary>
-        public Arduino() : this(Arduino.list().ElementAt(list().Length - 1), 57600, true, 8000) { }
+        public Arduino() : this(Arduino.list().ElementAt(list().Length - 1), 115200, true, 8000) { }
         /// <summary>
         /// Opens the serial port connection, should it be required. By default the port is
         /// opened when the object is first created.
@@ -397,7 +397,7 @@ namespace ZiFirmata
                                 _arduino.callDidI2CDataReveive(i2cReceivedData[0], i2cReceivedData[1], i2cReceivedData.Skip(2).ToArray());
 
                             }
-                            if (_storedInputData[0] == Arduino.SYSEX_SUB_STRING) {
+                            if (_sysexBytesRead > 5 &&_storedInputData[0] == Arduino.SYSEX_SUB_STRING) {
                                 //
                                 byte[] stringReceive = new byte[(_sysexBytesRead - 1) / 2];
                                 for (int i = 0; i < stringReceive.Count(); i++) {
