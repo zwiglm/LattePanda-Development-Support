@@ -12,10 +12,12 @@ namespace ZiFirmata.Container
         public StringResult(string wholeResult) {
             string[] stringParts = wholeResult.Split(GlobalConstants.STRING_DELIMITER);
             this.Key = stringParts[0];
-            this.Value = stringParts[1];
+            this.Value01 = stringParts[1];
+            this.Value02 = stringParts[2];
         }
 
         public string Key { get; set; }
-        public string Value { get; set; }
+        public string Value01 { get; set; }
+        public string Value02 { get; set; }
     }
 }
